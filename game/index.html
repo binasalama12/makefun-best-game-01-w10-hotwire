@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HOTWIRE CITY</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #07070d; }
+  #game { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+  /* HUD strip over the top of the canvas: cash/score/combo left, the
+     mission objective (with WIN / LOSE) centre, Net rings and bars right. */
+  #hud {
+    position: fixed; top: 0; left: 0; right: 0; height: 56px;
+    display: flex; align-items: center; gap: 18px; padding: 0 14px;
+    background: linear-gradient(rgba(8,9,16,0.92), rgba(8,9,16,0.78));
+    border-bottom: 1px solid rgba(255,233,184,0.22);
+    color: #e8e4da; font: 13px system-ui, sans-serif; z-index: 2;
+    pointer-events: none; box-sizing: border-box;
+  }
+  #hud .cash { color: #7ed492; font-weight: 700; font-size: 17px; white-space: nowrap; }
+  #hud .score { color: #ffd27a; font-weight: 700; font-size: 17px; white-space: nowrap; }
+  #hud .combo { color: #ffb84c; font-weight: 700; white-space: nowrap; }
+  #hud .obj { flex: 1; min-width: 0; text-align: center; line-height: 1.35; }
+  #hud .obj .t { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #hud .obj .w { color: #9fb4d8; font-size: 11.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #hud .heat { text-align: right; white-space: nowrap; }
+  #hud .stars { font-size: 16px; letter-spacing: 2px; color: #8a93a5; }
+  #hud .bar { width: 120px; height: 7px; background: rgba(255,255,255,0.12); border-radius: 4px; overflow: hidden; margin-top: 3px; }
+  #hud .bar > div { height: 100%; background: #ff9d5c; width: 0%; }
+  #hud .bar.hull > div { background: #7ed492; width: 100%; }
+  #hud .district { color: #b9a8e8; font-size: 11px; letter-spacing: 1px; }
+  #msg {
+    position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%);
+    color: #c9d2e0; font: 13px system-ui, sans-serif; z-index: 2;
+    background: rgba(8,9,16,0.7); padding: 5px 12px; border-radius: 12px;
+    pointer-events: none; white-space: nowrap;
+  }
+  /* Read aloud, never shown: the status line screen readers announce. */
+  #status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+</style>
+</head>
+<body>
+<canvas id="game" width="1280" height="720" aria-label="HOTWIRE CITY: run the fares, draft the mods, outrun Dray's Net"></canvas>
+<div id="hud">
+  <span class="cash" id="h-cash">$0</span>
+  <span class="score" id="h-score">0</span>
+  <span class="combo" id="h-combo"></span>
+  <span class="obj"><span class="t" id="h-obj"></span><br><span class="w"><span id="h-win"></span> &nbsp;·&nbsp; <span id="h-lose"></span></span></span>
+  <span class="heat">
+    <span class="stars" id="h-stars">NET ◇◇◇◇◇</span>
+    <span class="district" id="h-district"></span>
+    <span class="bar"><div id="h-heatbar"></div></span>
+    <span class="bar hull" id="h-hullwrap"><div id="h-hullbar"></div></span>
+  </span>
+</div>
+<p id="msg" role="status"></p>
+<p id="status" role="status" aria-live="polite"></p>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
